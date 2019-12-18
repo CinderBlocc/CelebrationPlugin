@@ -5,7 +5,7 @@
 
 using namespace std;
 
-BAKKESMOD_PLUGIN(CelebrationPlugin, "Template for creating camera control plugins", "1.0", PLUGINTYPE_FREEPLAY)
+BAKKESMOD_PLUGIN(CelebrationPlugin, "Celebration Plugin", "1.0", PLUGINTYPE_FREEPLAY)
 
 void CelebrationPlugin::onLoad()
 {
