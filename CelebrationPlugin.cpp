@@ -7,14 +7,6 @@ using namespace std;
 
 BAKKESMOD_PLUGIN(CelebrationPlugin, "Template for creating camera control plugins", "1.0", PLUGINTYPE_FREEPLAY)
 
-/*
-TO-DO
-	- Handle player pressing the reset button on their controller to reset their position
-
-
-*/
-
-
 void CelebrationPlugin::onLoad()
 {
 	Initialize();
