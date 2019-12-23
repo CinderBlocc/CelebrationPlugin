@@ -1,5 +1,7 @@
 # CelebrationPlugin
 
+Plugin download: https://bakkesplugins.com/plugins/view/27
+
 This is the source code for the Rocket League Celebration plugin. This plugin requires the parent plugin, CameraControl. The template code for creating your own camera control plugin is at the github link below.
 
 CameraControl plugin: https://bakkesplugins.com/plugins/view/71
