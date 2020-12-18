@@ -14,8 +14,8 @@ private:
 	bool isInRearCam = false;
 
 public:
-	virtual void onLoad();
-	virtual void onUnload();
+	void onLoad() override;
+	void onUnload() override;
 
 	void CreateValues();
 	void CelebrationReset();
@@ -23,7 +23,7 @@ public:
 
 	void Initialize();
 	bool CanCreateValues();
-	bool IsCVarNull(string cvarName);
+	bool IsCVarNull(std::string cvarName);
 	void Enable();
 	void Disable();
 	void HandleValues();

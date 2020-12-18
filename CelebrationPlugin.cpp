@@ -3,18 +3,16 @@
 #include <sstream>
 #include <filesystem>
 
-using namespace std;
-
 BAKKESMOD_PLUGIN(CelebrationPlugin, "Celebration Plugin", "1.0", PLUGINTYPE_FREEPLAY)
 
 void CelebrationPlugin::onLoad()
 {
 	Initialize();
-	cvarManager->registerNotifier("CelebrationEnable", [this](std::vector<string> params){Enable();}, "Enables celebration plugin", PERMISSION_ALL);
-	cvarManager->registerNotifier("CelebrationDisable", [this](std::vector<string> params){Disable();}, "Disables celebration plugin", PERMISSION_ALL);
-	cvarManager->registerNotifier("CelebrationReset", [this](std::vector<string> params){CelebrationReset();}, "Reset celebration to beginning state", PERMISSION_ALL);
+	cvarManager->registerNotifier("CelebrationEnable", [this](std::vector<std::string> params){Enable();}, "Enables celebration plugin", PERMISSION_ALL);
+	cvarManager->registerNotifier("CelebrationDisable", [this](std::vector<std::string> params){Disable();}, "Disables celebration plugin", PERMISSION_ALL);
+	cvarManager->registerNotifier("CelebrationReset", [this](std::vector<std::string> params){CelebrationReset();}, "Reset celebration to beginning state", PERMISSION_ALL);
 
-	gameWrapper->HookEvent("Function GameEvent_TA.Countdown.OnPlayerRestarted", bind(&CelebrationPlugin::ResetButton, this));
+	gameWrapper->HookEvent("Function GameEvent_TA.Countdown.OnPlayerRestarted", std::bind(&CelebrationPlugin::ResetButton, this));
 }
 
 
@@ -32,7 +30,7 @@ void CelebrationPlugin::CreateValues()
 void CelebrationPlugin::ResetButton()
 {
 	//Delay resetting the car and ball after the player has pressed their reset shot binding
-	gameWrapper->SetTimeout(bind(&CelebrationPlugin::CelebrationReset, this), 0.05f);
+	gameWrapper->SetTimeout(std::bind(&CelebrationPlugin::CelebrationReset, this), 0.05f);
 }
 
 void CelebrationPlugin::CelebrationReset()
@@ -79,7 +77,7 @@ void CelebrationPlugin::onUnload(){}
 void CelebrationPlugin::Initialize()
 {
 	//Install parent plugin if it isn't already installed. Ensure parent plugin is loaded.
-	if(!experimental::filesystem::exists(".\\bakkesmod\\plugins\\CameraControl.dll"))
+	if(!std::filesystem::exists(gameWrapper->GetBakkesModPath() / "plugins" / "CameraControl.dll"))
 		cvarManager->executeCommand("bpm_install 71");
 	cvarManager->executeCommand("plugin load CameraControl", false);
 
@@ -97,7 +95,7 @@ bool CelebrationPlugin::CanCreateValues()
 	else
 		return true;
 }
-bool CelebrationPlugin::IsCVarNull(string cvarName)
+bool CelebrationPlugin::IsCVarNull(std::string cvarName)
 {
     struct CastStructOne
     {
@@ -107,7 +105,7 @@ bool CelebrationPlugin::IsCVarNull(string cvarName)
 
 	CVarWrapper cvar = cvarManager->getCvar(cvarName);
     CastStructOne* castone = (CastStructOne*)&cvar;
-    return castone->casttwo->address == NULL;
+    return castone->casttwo->address == nullptr;
 }
 void CelebrationPlugin::Enable()
 {
@@ -148,15 +146,15 @@ void CelebrationPlugin::HandleValues()
 	CreateValues();
 
 	//Send value requests to the parent mod
-	string values[8];
-	values[0] = to_string(FOCUS.X);
-	values[1] = to_string(FOCUS.Y);
-	values[2] = to_string(FOCUS.Z);
-	values[3] = to_string(ROTATION.Pitch);
-	values[4] = to_string(ROTATION.Yaw);
-	values[5] = to_string(ROTATION.Roll);
-	values[6] = to_string(DISTANCE);
-	values[7] = to_string(FOV);
+	std::string values[8];
+	values[0] = std::to_string(FOCUS.X);
+	values[1] = std::to_string(FOCUS.Y);
+	values[2] = std::to_string(FOCUS.Z);
+	values[3] = std::to_string(ROTATION.Pitch);
+	values[4] = std::to_string(ROTATION.Yaw);
+	values[5] = std::to_string(ROTATION.Roll);
+	values[6] = std::to_string(DISTANCE);
+	values[7] = std::to_string(FOV);
 	
 	for(int i=0; i<8; i++)
 	{
@@ -174,9 +172,9 @@ Rotator CelebrationPlugin::GetSwivel()
 	if(IsCVarNull("CamControl_Swivel_READONLY"))
 		return Rotator{0,0,0};
 
-	string readSwivel = cvarManager->getCvar("CamControl_Swivel_READONLY").getStringValue();
-	string swivelInputString;
-	stringstream ssSwivel(readSwivel);
+	std::string readSwivel = cvarManager->getCvar("CamControl_Swivel_READONLY").getStringValue();
+	std::string swivelInputString;
+	std::stringstream ssSwivel(readSwivel);
 
 	Rotator SWIVEL = {0,0,0};
 
